@@ -13,7 +13,7 @@ export default function App() {
   const [userCart, setUserCart] = useState([]);
   const [isShowToast, setIsShowToast] = useState(false);
   const [isShowCart, setIsShowCart] = useState(false);
-console.log(userCart);
+
   return (
     <div>
       <ProductsContext.Provider
