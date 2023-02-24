@@ -87,7 +87,6 @@ export default function ProductsSection() {
                   >
                     More Information
                   </a>
-                  <p className="number">Number: {product.count}</p>
                 </div>
               </div>
             </div>
