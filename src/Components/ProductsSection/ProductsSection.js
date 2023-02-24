@@ -4,7 +4,53 @@ import "./ProductsSection.css";
 
 export default function ProductsSection() {
   const contextData = useContext(productsContext);
+  const addCart = (product) => {
+    contextData.setIsShowToast(true);
 
+    setTimeout(() => {
+      contextData.setIsShowToast(false);
+    }, 3000);
+
+    let isInUserCart = contextData.userCart.some(
+      (bagProduct) => bagProduct.title === product.title
+    );
+
+    if (!isInUserCart) {
+      let newUserCartProduct = {
+        id: contextData.userCart.length + 1,
+        title: product.title,
+        price: product.price,
+        count: 1,
+      };
+
+      contextData.setUserCart((prevProducts) => [
+        ...prevProducts,
+        newUserCartProduct,
+      ]);
+    } else {
+      let userCart = [...contextData.userCart];
+
+      // Way 1
+      // userCart.some(bagProduct => {
+      //   if (bagProduct.title === product.title) {
+      //     bagProduct.count += 1
+      //     return true
+      //   }
+      // })
+
+      // contextData.setUserCart(userCart)
+
+      // Way 2
+      let newUserCart = userCart.map((bagProduct) => {
+        if (bagProduct.title === product.title) {
+          bagProduct.count += 1;
+        }
+        return bagProduct;
+      });
+
+      contextData.setUserCart(newUserCart);
+    }
+  };
   return (
     <>
       {contextData.allProducts.map((productSection) => (
@@ -30,51 +76,7 @@ export default function ProductsSection() {
                     href="javascript:void(0)"
                     className="btn btn-danger"
                     onClick={() => {
-                      contextData.setIsShowToast(true);
-
-                      setTimeout(() => {
-                        contextData.setIsShowToast(false);
-                      }, 3000);
-
-                      let isInUserCart = contextData.userCart.some(
-                        (bagProduct) => bagProduct.title === product.title
-                      );
-
-                      if (!isInUserCart) {
-                        let newUserCartProduct = {
-                          id: contextData.userCart.length + 1,
-                          title: product.title,
-                          price: product.price,
-                          count: 1,
-                        };
-
-                        contextData.setUserCart((prevProducts) => [
-                          ...prevProducts,
-                          newUserCartProduct,
-                        ]);
-                      } else {
-                        let userCart = [...contextData.userCart];
-
-                        // Way 1
-                        // userCart.some(bagProduct => {
-                        //   if (bagProduct.title === product.title) {
-                        //     bagProduct.count += 1
-                        //     return true
-                        //   }
-                        // })
-
-                        // contextData.setUserCart(userCart)
-
-                        // Way 2
-                        let newUserCart = userCart.map((bagProduct) => {
-                          if (bagProduct.title === product.title) {
-                            bagProduct.count += 1;
-                          }
-                          return bagProduct;
-                        });
-
-                        contextData.setUserCart(newUserCart);
-                      }
+                      addCart(product);
                     }}
                   >
                     Add To Cart
